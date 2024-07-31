@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Viniey's Draws</title>
+    <style> 
+        /* Add your CSS here */
+        .banner {
+            background-image: url('/images/background.jpg'); /* Replace with the path to your image */
+            background-size: cover; /* Cover the entire area of the banner */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevent the image from repeating */
+            color: white; /* Set text color to white for better visibility on dark backgrounds */
+            padding: 100px 0; /* Add some padding to the banner */
+            text-align: center; /* Center-align the text */
+            font-family:'fantasy';
+            
+        }
+        .navbar {
+            background-color: rgb(241, 105, 105); /* Example dark background */
+            color : black; /* Example light text color */
+        }
+        .navbar .navbar-brand,
+        .navbar .nav-link {
+            color: rgb(11, 9, 9); /* Make links white */
+        }
+        .navbar .navbar-toggler {
+            border-color: rgb(224, 156, 156); /* White border for the toggler */
+        }
+
+        body {
+            background-color: #fb9d81; /* Change this to your desired background color */
+            color: #000; /* Example text color */
+        }
+        
+        .card {
+            background-color: #fff; /* Ensure card backgrounds are white */
+        }
+        
+        .card-body {
+            color: #000; /* Ensure card text color is black */
+        }
+
+        .body {
+            color: rgb(255, 176, 107);
+        }
+
+    </style>
+</head>
+<body>
+    <%-include('partials/navbar.ejs') %> <!-- Include the navbar -->
+
+    <div class="banner">
+        <div class="container mt-4">
+            <h1>Welcome to Vinieys Draws Art Gallery</h1>
+            <p>Explore a wide range of beautiful artworks</p>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <h1>Art Gallery</h1>
+        <div class="row">
+          <% if (paintings.length === 0) { %>
+            <p>No paintings available.</p>
+          <% } else { %>
+            <% paintings.forEach(painting => { %>
+              <div class="col-md-4 mb-3">
+                <div class="card">
+                  <img src="<%= painting.image %>" class="card-img-top" alt="<%= painting.title %>" style="max-height: 300px; object-fit: cover;">
+                  <div class="card-body">
+                    <h5 class="card-title"><%= painting.title %></h5>
+                    <p class="card-text">Artist: <%= painting.artist %></p>
+                    <p class="card-text">Price: $<%= painting.price %></p>
+                    <p class="card-text">Category: <%= painting.category %></p>
+                    <p class="card-text">Status: <%= painting.availability %></p>
+                    <p class="card-text">Social Media:<a href="<%= painting.socialmedia %>" target="_blank"><%= painting.socialmedia %></a></p>
+                    <a href="/paintings/<%= painting.paintingid %>" class="btn btn-primary">View Details</a>
+                    <form action="/cart/add" method="post" style="display: inline;">
+                      <input type="hidden" name="id" value="<%= painting.paintingid %>">
+                      <button type="submit" class="btn btn-success">Add to Cart</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          <% } %>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

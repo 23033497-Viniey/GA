@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Shopping Cart</title>
+</head>
+<body>
+    <%- include('partials/navbar') %> 
+    <h1>Your Cart</h1>
+    <% if (cart.length === 0) { %>
+        <p>Your cart is empty.</p>
+    <% } else { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Painting</th>
+                    <th>Artist</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% cart.forEach(item => { %>
+                    <tr>
+                        <td><%= item.painting.title %></td>
+                        <td><%= item.painting.artist %></td>
+                        <td>$<%= item.painting.price %></td>
+                        <td>
+                            <form action="/cart/update" method="POST">
+                                <input type="hidden" name="paintingid" value="<%= item.painting.paintingid %>">
+                                <input type="number" name="quantity" value="<%= item.quantity %>" min="1">
+                                <button type="submit">Update</button>
+                            </form>
+                        </td>
+                        <td>$<%= item.painting.price * item.quantity %></td>
+                        <td>
+                            <form action="/cart/remove" method="POST">
+                                <input type="hidden" name="paintingid" value="<%= item.painting.paintingid %>">
+                                <button type="submit">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <p><strong>Total:</strong> $<%= cart.reduce((total, item) => total + item.painting.price * item.quantity, 0) %></p>
+        <form action="/checkout" method="get">
+            <button type="submit">Checkout</button>
+        </form>
+    <% } %>
+</body>
+</html>
+
+</html>
